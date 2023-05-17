@@ -10,11 +10,10 @@ def get_channel_url(youtube_link):
     parsed_url = urlparse(decoded_link)
     query_params = parse_qs(parsed_url.query)
     # print(parsed_url)
-    # query_params = parse_qs(parsed_url.query)
-    # print(query_params)
-    #print("inside function")
+
+    
     if parsed_url.path == '/channel/' or parsed_url.path == '/user/':
-        return youtube_link  # Already a channel URL
+        return youtube_link
     
     if 'v' in query_params:
         video_id = query_params['v'][0]
@@ -24,44 +23,36 @@ def get_channel_url(youtube_link):
     else:
         return "None"
     
-# The base URL for the Google search results page
 base_url = "https://www.google.com/search?q=site%3Ayoutube.com+openinapp.co&start={}"
 
-# The number of search results to scrape per page
+# The number of search results per page
 results_per_page = 10
 
-# The total number of pages to scrape (we want to scrape the first 1000 results)
 num_pages=10
 
-# A list to store the URLs of the scraped search results
 urls = []
 
-# Loop through each page of search results and scrape the URLs
-#rint(type(num_pages))
+#print(type(num_pages))
 #print(num_pages)
 for i in range(num_pages):
-    print("first loop")
-    # Calculate the start index for the current page of search results
+    # print("first loop")
     start = i * results_per_page
     
-    # Construct the URL for the current page of search results
     url = base_url.format(start)
     
-    # Send a GET request to the URL and get the response
     response = requests.get(url)
     #print(response)
-    # Use Beautiful Soup to parse the HTML content of the response
+    
     soup = BeautifulSoup(response.content, "html.parser")
     #print(soup)
     #print("hello world")
-    # Find all the search result links on the page and add them to the list of URLs
     for link in soup.find_all("a"):
         href = link.get("href")
         if href.startswith("/url?q="):
             url = href.replace("/url?q=", "").split("&")[0]
             urls.append(url)
             
-            # Stop the loop if we have reached the desired number of search results
+            # Stop the loop 
             if len(urls) == 100:
                 break
             
@@ -83,12 +74,7 @@ for i in range(0,len(urls)):
   else: 
     channel_list.append(channel_url)
 
-# if channel_url == youtube_link:
-#     print('The provided URL is already a channel link.')
-# else:
-#     print('The channel URL:', channel_url)
-#print(channel_list)
-
+# converting list into json format
 
 json_data = json.dumps(channel_list,indent=4)
 print("############################# Channel Link ##################")

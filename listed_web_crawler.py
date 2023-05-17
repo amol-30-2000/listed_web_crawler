@@ -28,7 +28,7 @@ base_url = "https://www.google.com/search?q=site%3Ayoutube.com+openinapp.co&star
 # The number of search results per page
 results_per_page = 10
 
-num_pages=10
+num_pages=1000
 
 urls = []
 
@@ -53,11 +53,11 @@ for i in range(num_pages):
             urls.append(url)
             
             # Stop the loop 
-            if len(urls) == 100:
+            if len(urls) == 10000:
                 break
             
     # Stop the loop if we have reached the desired number of search results
-    if len(urls) == 100:
+    if len(urls) == 10000:
         break
 print("############################# Youtube Link ##################")
 print(urls)
